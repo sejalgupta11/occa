@@ -6,16 +6,16 @@ title: "OCCA: A unified approach to multi-threading languages"
 authors:
   - family-names: "Medina"
     given-names: "David S"
-    orcid: ""
   - family-names: "St-Cyr"
     given-names: "Amik"
-    orcid: ""
   - family-names: "Warburton"
     given-names: "Tim"
     orcid: "https://orcid.org/0000-0002-3202-1151"
-date: "2014-03-04"
+date-released: "2014-03-04"
 version: "v1"
-publisher: "arXiv"
+# publisher: "arXiv" # this library seems to not support "publisher, but this info is in the doi "
+# "publisher" field seems to only be allowed under "references": https://github.com/citation-file-format/citation-file-format/blob/main/schema-guide.md#definitionsreferencepublisher
+
 repository-code: "https://github.com/libocca/occa"
 keywords:
   - "OpenMP"
