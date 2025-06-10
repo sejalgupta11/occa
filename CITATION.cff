@@ -1,8 +1,7 @@
 cff-version: 1.2.0
-message: "If you use this software, please cite it as below."
-doi: "10.48550/arXiv.1403.0968"
-url: "https://arxiv.org/abs/1403.0968"
 title: "OCCA: A unified approach to multi-threading languages"
+doi: "10.48550/arXiv.1403.0968"
+message: "If you use this software, please cite it as below."
 authors:
   - family-names: "Medina"
     given-names: "David S"
@@ -13,6 +12,7 @@ authors:
     orcid: "https://orcid.org/0000-0002-3202-1151"
 date-released: "2014-03-04"
 version: "v1"
+url: "https://libocca.org/"
 repository-code: "https://github.com/libocca/occa"
 keywords:
   - "OpenMP"
@@ -22,3 +22,19 @@ keywords:
   - "finite difference"
   - "spectral element"
   - "finite element"
+preferred-citation:
+  type: article 
+  title: "OCCA: A unified approach to multi-threading languages"
+  url: "https://arxiv.org/abs/1403.0968"
+  authors:
+    - family-names: "Medina"
+      given-names: "David S"
+    - family-names: "St-Cyr"
+      given-names: "Amik"
+    - family-names: "Warburton"
+      given-names: "Tim"
+      orcid: "https://orcid.org/0000-0002-3202-1151"
+  publisher: 
+    name: "arXiv"
+    website: "https://arxiv.org"
+  doi: "10.48550/arXiv.1403.0968"
