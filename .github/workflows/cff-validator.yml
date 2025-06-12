@@ -1,20 +1,14 @@
+name: Validate CITATION.cff
 on:
   push:
     paths:
       - CITATION.cff
-  workflow_dispatch:
-
-name: CITATION.cff
 jobs:
-  Validate-CITATION-cff:
-    runs-on: ubuntu-latest
+  validate-citation-cff:
     name: Validate CITATION.cff
-    env:
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Validate CITATION.cff
+      - name: Run cff-validator
         uses: dieghernan/cff-validator@main
