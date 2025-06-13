@@ -120,8 +120,24 @@ namespace occa {
       setCudaContext();
 
       if (props.get<bool>("nonblocking", false)) {
-        OCCA_CUDA_ERROR("Device: createStream - NonBlocking",
-                        cuStreamCreate(&cuStream, CU_STREAM_NON_BLOCKING));
+#if CUDA_VERSION >= 11000
+        if (props.get<bool>("priority", false)) {
+          int least, greatest;
+          OCCA_CUDA_ERROR("Device: createStream - priority",
+                          cuCtxGetStreamPriorityRange (&least, &greatest));
+          int lmin  = props.get<int>("prioritymin", 0);
+          int lmax  = props.get<int>("prioritymax", 4);
+          int level = props.get<int>("prioritylevel", 2);
+          int priority = least + ((greatest - least) * level) / (lmax - lmin);
+          OCCA_CUDA_ERROR("Device: createStream  - priority",
+                          cuStreamCreateWithPriority (&cuStream, CU_STREAM_NON_BLOCKING, priority));
+        } else {
+#endif
+          OCCA_CUDA_ERROR("Device: createStream - NonBlocking",
+                          cuStreamCreate(&cuStream, CU_STREAM_NON_BLOCKING));
+#if CUDA_VERSION >= 11000
+        }
+#endif
       } else {
         OCCA_CUDA_ERROR("Device: createStream",
                         cuStreamCreate(&cuStream, CU_STREAM_DEFAULT));
