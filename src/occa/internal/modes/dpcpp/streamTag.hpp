@@ -4,10 +4,8 @@
 #include <occa/internal/core/streamTag.hpp>
 #include <occa/internal/modes/dpcpp/polyfill.hpp>
 
-namespace occa
-{
-  namespace dpcpp
-  {
+namespace occa{
+  namespace dpcpp{
     class streamTag : public occa::modeStreamTag_t
     {
     public:

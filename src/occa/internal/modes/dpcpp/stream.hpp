@@ -12,9 +12,12 @@ namespace occa {
     public:
 	    ::sycl::queue commandQueue;
 
+      bool isWrapped; 
+
       stream(modeDevice_t *modeDevice_,
              const occa::json &properties_,
-             ::sycl::queue commandQueue_);
+             ::sycl::queue commandQueue_, 
+             bool isWrapped_=false);
 
       virtual ~stream()=default;
 
