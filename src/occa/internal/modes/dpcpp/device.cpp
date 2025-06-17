@@ -64,15 +64,20 @@ namespace occa{
     modeStream_t *device::createStream(const occa::json &props)
     {
 
-      if (props.get<bool>("nonblocking", false)) {
-          ::sycl::queue q(dpcppContext,
+      ::sycl::queue q(dpcppContext,
                                 dpcppDevice,
                                 {::sycl::property::queue::enable_profiling{},
                                 ::sycl::property::queue::in_order{}
                                 });
-                return new occa::dpcpp::stream(this, props, q);
+        occa::dpcpp::stream* newStream = new occa::dpcpp::stream(this, props, q);
+
+      if (props.get<bool>("nonblocking", false)) {
+          return newStream; 
       } else{
         //wait/wait_and_throw make a stream blocking but they need to be called after things are added to the stream i think? 
+        newStream->finish(); //waitFor? 
+        return newStream; 
+
       }
 
       

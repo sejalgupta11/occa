@@ -9,20 +9,15 @@ namespace occa {
                    ::sycl::queue commandQueue_, 
                    bool isWrapped_) :
       modeStream_t(modeDevice_, properties_),
-      isWrapped(isWrapped_), 
-      commandQueue(commandQueue_) {
+      commandQueue(commandQueue_), 
+      isWrapped(isWrapped_) {
 
       }
 
 
       //  todo implement deconstructor
-    stream::~stream() {
-      if(!isWrapped){
-        OCCA_DPCPP_ERROR("sycl queue: wait_and_throw", commandQueue.wait_and_throw());
-        
-      }
-
-    }
+    stream::~stream() {}
+    
 
     void stream::finish(){
       OCCA_DPCPP_ERROR("stream::finish",
