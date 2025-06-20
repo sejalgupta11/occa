@@ -10,8 +10,15 @@
 
 occa::json parseArgs(int argc, const char **argv);
 
+ //set occa backend with cuda
+// Note: This is not a supported API, but used in the examples
+//       Please don't rely on it outside of the occa examples
+
 int main(int argc, const char **argv) {
-  occa::json args = parseArgs(argc, argv);
+  // initialize occa device to sycl (well supported)
+  // Note: This is not a supported API, but used in the examples
+  //       Please don't rely on it outside of the occa examples
+ occa::json args = parseArgs(argc, argv);
 
   int entries = 8;
 

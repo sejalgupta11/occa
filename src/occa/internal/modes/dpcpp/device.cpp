@@ -13,13 +13,15 @@
 #include <occa/internal/lang/kernelMetadata.hpp>
 #include <occa/internal/lang/modes/dpcpp.hpp>
 
-namespace occa
-{
-  namespace dpcpp
-  {
+
+
+namespace occa{
+  namespace dpcpp{
+
     device::device(const occa::json &properties_, 
-                   const ::sycl::device& device_)
-        : occa::launchedModeDevice_t(properties_), dpcppDevice(device_), dpcppContext(device_) 
+                   const ::sycl::device& device_) :
+          occa::launchedModeDevice_t(properties_), 
+          dpcppDevice(device_), dpcppContext(device_) 
     {
       occa::json &kernelProps = properties["kernel"];
       setCompilerLinkerOptions(kernelProps);
@@ -61,12 +63,26 @@ namespace occa
     //---[ Stream ]---------------------
     modeStream_t *device::createStream(const occa::json &props)
     {
+
       ::sycl::queue q(dpcppContext,
-                      dpcppDevice,
-                      {::sycl::property::queue::enable_profiling{},
-                      ::sycl::property::queue::in_order{}
-                      });
-      return new occa::dpcpp::stream(this, props, q);
+                                dpcppDevice,
+                                {::sycl::property::queue::enable_profiling{},
+                                ::sycl::property::queue::in_order{}
+                                });
+        occa::dpcpp::stream* newStream = new occa::dpcpp::stream(this, props, q);
+
+      if (props.get<bool>("nonblocking", false)) {
+          return newStream; 
+      } else{
+        //wait/wait_and_throw make a stream blocking but they need to be called after things are added to the stream i think? 
+        newStream->finish(); //waitFor? 
+        return newStream; 
+
+      }
+
+      
+
+      
     }
 
     modeStream_t* device::wrapStream(void* ptr, const occa::json &props) {

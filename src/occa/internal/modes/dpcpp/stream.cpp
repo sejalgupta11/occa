@@ -6,31 +6,49 @@ namespace occa {
   namespace dpcpp {
     stream::stream(modeDevice_t *modeDevice_,
                    const occa::json &properties_,
-                   ::sycl::queue commandQueue_) :
+                   ::sycl::queue commandQueue_, 
+                   bool isWrapped_) :
       modeStream_t(modeDevice_, properties_),
-      commandQueue(commandQueue_) {}
+      commandQueue(commandQueue_), 
+      isWrapped(isWrapped_) {
 
-    void stream::finish()
-    {
+      }
+
+
+      //  todo implement deconstructor
+    stream::~stream() {}
+    
+
+    void stream::finish(){
       OCCA_DPCPP_ERROR("stream::finish",
                        commandQueue.wait_and_throw());
     }
 
-    void stream::waitFor(occa::streamTag tag)
-    {
-      auto& dpcppTag{getDpcppStreamTag(tag)};
-      OCCA_DPCPP_ERROR("stream::waitFor",
-                       commandQueue.ext_oneapi_submit_barrier( std::vector<sycl::event>{dpcppTag.dpcppEvent} ));
+    void stream::waitFor(occa::streamTag tag) {
+      // auto& dpcppTag{getDpcppStreamTag(tag)};
+      occa::dpcpp::streamTag *dpcppTag = (
+        dynamic_cast<occa::dpcpp::streamTag*>(tag.getModeStreamTag())
+      );
+
+
+
+      // OCCA_DPCPP_ERROR("stream::waitFor",
+                      //  commandQueue.ext_oneapi_submit_barrier( std::vector<sycl::event>{dpcppTag.dpcppEvent} ));
+      commandQueue.ext_oneapi_submit_barrier( std::vector<sycl::event>{dpcppTag->dpcppEvent} );
+
     }
 
-    occa::dpcpp::streamTag stream::memcpy(void * dest,const void* src, occa::udim_t num_bytes)
-    {
-      ::sycl::event e{commandQueue.memcpy(dest, src, num_bytes)};
-      return dpcpp::streamTag(modeDevice, e);
-    }
+  
 
     void* stream::unwrap() {
       return static_cast<void*>(&commandQueue);
     }
   }
+
+
+    // occa::dpcpp::streamTag stream::memcpy(void * dest,const void* src, occa::udim_t num_bytes)
+    // {
+    //   ::sycl::event e{commandQueue.memcpy(dest, src, num_bytes)};
+    //   return dpcpp::streamTag(modeDevice, e);
+    // }
 }
