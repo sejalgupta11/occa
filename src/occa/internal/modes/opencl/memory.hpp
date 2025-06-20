@@ -47,6 +47,7 @@ namespace occa {
                     const occa::json &props = occa::json()) override;
 
       void* unwrap() override;
+
     };
   }
 }

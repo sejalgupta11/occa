@@ -22,6 +22,9 @@ namespace occa {
       void memcpy(modeBuffer_t* dst, const dim_t dstOffset,
                   modeBuffer_t* src, const dim_t srcOffset,
                   const udim_t bytes) override;
+
+      udim_t freeDeviceMemory() const; 
+      udim_t totalDeviceMemory() const; 
     };
   }
 }

@@ -57,5 +57,14 @@ namespace occa {
                                           getCuStream()));
       }
     }
+
+    udim_t memoryPool::freeDeviceMemory() const{
+      return 0; //todo
+    }
+
+    udim_t memoryPool::totalDeviceMemory() const{
+      return 0; //todo
+    }
+
   }
 }
