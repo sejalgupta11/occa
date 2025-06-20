@@ -12,12 +12,7 @@ namespace occa {
       commandQueue(commandQueue_), 
       isWrapped(isWrapped_) {
 
-      }
-
-
-      //  todo implement deconstructor
-    stream::~stream() {}
-    
+      }    
 
     void stream::finish(){
       OCCA_DPCPP_ERROR("stream::finish",
