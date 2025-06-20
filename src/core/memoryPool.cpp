@@ -130,6 +130,17 @@ namespace occa {
     return modeMemoryPool->alignment;
   }
 
+
+  udim_t memoryPool::freeDeviceMemory() const {
+
+    return 0; //todo 
+  }
+
+  udim_t memoryPool::freeDeviceMemory() const {
+
+    return 0; //todo
+  }
+
   bool memoryPool::operator == (const occa::memoryPool &other) const {
     return (modeMemoryPool == other.modeMemoryPool);
   }
