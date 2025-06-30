@@ -11,4 +11,4 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Run cff-validator
-        uses: dieghernan/cff-validator@main
+        uses: dieghernan/cff-validator@v4
