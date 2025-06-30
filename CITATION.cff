@@ -1,0 +1,35 @@
+cff-version: 1.2.0
+title: "OCCA: A portable and vendor-neutral framework for parallel programming on heterogeneous platforms"
+version: v2.0
+date-released: 2024-04-17
+license: MIT
+message: "Please cite the following works when using this software."
+authors:
+  - family-names: Medina
+    given-names: David
+  - family-names: Warburton
+    given-names: Tim
+    orcid: https://orcid.org/0000-0002-3202-1151
+  - family-names: Chalmers
+    given-names: Noel
+    orcid: https://orcid.org/0000-0002-1293-7525
+  - family-names: Rowe
+    given-names: Kris
+url: "https://libocca.org/"
+repository-code: "https://github.com/libocca/occa"
+preferred-citation:
+  type: article 
+  title: "OCCA: A unified approach to multi-threading languages"
+  url: "https://arxiv.org/abs/1403.0968"
+  authors:
+    - family-names: Medina
+      given-names: David
+    - family-names: St-Cyr
+      given-names: Amik
+    - family-names: Warburton
+      given-names: Tim
+      orcid: https://orcid.org/0000-0002-3202-1151
+  publisher: 
+    name: arXiv
+    website: https://arxiv.org
+  doi: 10.48550/arXiv.1403.0968

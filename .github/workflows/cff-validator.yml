@@ -1,0 +1,14 @@
+name: Validate CITATION.cff
+on:
+  push:
+    paths:
+      - CITATION.cff
+jobs:
+  validate-citation-cff:
+    name: Validate CITATION.cff
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Run cff-validator
+        uses: dieghernan/cff-validator@v4
