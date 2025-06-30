@@ -9,10 +9,10 @@ authors:
     given-names: David
   - family-names: Warburton
     given-names: Tim
-    orcid: 0000-0002-3202-1151
+    orcid: https://orcid.org/0000-0002-3202-1151
   - family-names: Chalmers
     given-names: Noel
-    orcid: 0000-0002-1293-7525
+    orcid: https://orcid.org/0000-0002-1293-7525
   - family-names: Rowe
     given-names: Kris
 url: "https://libocca.org/"
@@ -28,7 +28,7 @@ preferred-citation:
       given-names: Amik
     - family-names: Warburton
       given-names: Tim
-      orcid: 0000-0002-3202-1151
+      orcid: https://orcid.org/0000-0002-3202-1151
   publisher: 
     name: arXiv
     website: https://arxiv.org
