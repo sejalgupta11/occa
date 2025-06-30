@@ -38,11 +38,22 @@ namespace occa {
     }
 
     udim_t memoryPool::freeDeviceMemory() const{
-      return 0; //todo
+
+      if (dev.has(aspect::ext_intel_free_memory)) {
+        auto freeMemory = dev.get_info<ext::intel::info::device::free_memory>();
+        return static_cast<udim_t>(freeMemory);
+      }
+      return 0; // throw an error here? 
+      
+
+       
     }
 
     udim_t memoryPool::totalDeviceMemory() const{
-      return 0; //todo
+      uint64_t totalMemory = ::sycl::info::device::global_mem_size(); 
+      return static_cast<udim_t>(totalMemory); 
+
+
     }
   }
 }

@@ -4,6 +4,7 @@
 #include <occa/internal/modes/serial/memory.hpp>
 #include <occa/internal/modes/serial/memoryPool.hpp>
 #include <occa/internal/utils/sys.hpp>
+#include <malloc.hpp>
 
 namespace occa {
   namespace serial {
@@ -34,12 +35,19 @@ namespace occa {
                bytes);
     }
 
+
+    // https://www.man7.org/linux/man-pages/man3/mallinfo.3.html
     udim_t memoryPool::freeDeviceMemory() const{
-      return 0; //todo
+      struct mallinfo2 result = mallinfo2(); // a struct of kind mallinfo2
+      size_t freeMem = result.fordblks; // total free space, bytes
+      return static_cast<udim_t>(freeMem); 
     }
 
     udim_t memoryPool::totalDeviceMemory() const{
-      return 0; //todo
+      struct mallinfo2 result = mallinfo2(); // a struct of kind mallinfo2
+      size_t freeMem = result.fordblks; // total allocated space, bytes
+      size_t allocatedMem = result.uordblks
+      return static_cast<udim_t>(freeMem + allocatedMem); 
     }
   }
 }

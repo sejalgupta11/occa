@@ -62,11 +62,15 @@ namespace occa {
     }
 
     udim_t memoryPool::freeDeviceMemory() const{
-      return 0; //todo
+      size_t free, total; 
+      OCCA_HIP_ERROR("Memory: query memory info", hipMemGetInfo(&free, &total)); 
+      return static_cast<udim_t>(free);
     }
 
     udim_t memoryPool::totalDeviceMemory() const{
-      return 0; //todo
+      size_t free, total; 
+      OCCA_HIP_ERROR("Memory: query memory info", hipMemGetInfo(&free, &total)); 
+      return static_cast<udim_t>(total);
     }
   }
 }

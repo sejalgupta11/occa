@@ -59,11 +59,15 @@ namespace occa {
     }
 
     udim_t memoryPool::freeDeviceMemory() const{
-      return 0; //todo
+      size_t freeBytes, totalBytes;
+      OCCA_CUDA_ERROR(cuMemGetInfo(&freeBytes, &totalBytes));
+      return static_cast<udim_t>(freeBytes);
     }
 
     udim_t memoryPool::totalDeviceMemory() const{
-      return 0; //todo
+      size_t freeBytes, totalBytes;
+      OCCA_CUDA_ERROR(cuMemGetInfo(&freeBytes, &totalBytes));
+      return static_cast<udim_t>(totalBytes);
     }
 
   }

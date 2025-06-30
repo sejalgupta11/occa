@@ -129,7 +129,7 @@ namespace occa {
     udim_t alignment() const;
 
     /**
-     * @startDoc{alignment}
+     * @startDoc{freeDeviceMemory}
      *
      * Description:
      *   Get the byte size of the unallocated memory
@@ -139,7 +139,7 @@ namespace occa {
     udim_t freeDeviceMemory() const; 
 
     /**
-     * @startDoc{alignment}
+     * @startDoc{totalDeviceMemory}
      *
      * Description:
      *   Get the byte size of the total device memory
