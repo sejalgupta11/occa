@@ -12,7 +12,10 @@ namespace occa {
   namespace serial {
     memoryPool::memoryPool(modeDevice_t *modeDevice_,
                            const occa::json &properties_) :
-      occa::modeMemoryPool_t(modeDevice_, properties_) {}
+      occa::modeMemoryPool_t(modeDevice_, properties_) {
+        // struct mallinfo mi = ::mallinfo(); 
+        // const udim_t starting_memory = mi.uordblks; //memory allocated at the start of memoryPool
+      }
 
     modeBuffer_t* memoryPool::makeBuffer() {
       return new serial::buffer(modeDevice, 0, properties);
@@ -41,15 +44,14 @@ namespace occa {
     // https://www.man7.org/linux/man-pages/man3/mallinfo.3.html
     udim_t memoryPool::freeDeviceMemory() const{
       struct mallinfo result = ::mallinfo(); 
-      size_t freeMem = result.fordblks; // total free space, bytes
-      return freeMem; 
+      auto freeMem = result.fordblks; // total free space, bytes
       return static_cast<udim_t>(freeMem); 
     }
 
     udim_t memoryPool::totalDeviceMemory() const{
       struct mallinfo result = ::mallinfo(); 
-      size_t freeMem = result.fordblks; // total allocated space, bytes
-      size_t allocatedMem = result.uordblks;
+      auto freeMem = result.fordblks; // total free space, bytes
+      auto allocatedMem = result.uordblks; //total allocated space (includes other programs too)
       return static_cast<udim_t>(freeMem + allocatedMem); 
     }
   }
