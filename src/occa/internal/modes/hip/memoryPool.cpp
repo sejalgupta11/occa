@@ -4,6 +4,8 @@
 #include <occa/internal/modes/hip/memoryPool.hpp>
 #include <occa/internal/modes/hip/utils.hpp>
 
+// #include <hip_runtime_api.hpp>
+
 namespace occa {
   namespace hip {
     inline hipDeviceptr_t addHipPtrOffset(hipDeviceptr_t hipPtr, const udim_t offset) {

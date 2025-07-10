@@ -160,6 +160,10 @@ namespace occa {
     return OCCA_CUDA_IS_NOT_ENABLED;
   }
 
+  inline CUresult cuMemGetInfo(size_t *free, size_t *total) {
+    return OCCA_CUDA_IS_NOT_ENABLED;
+  }
+
   //   ---[ Event ]---------------------
   inline CUresult cuEventCreate(CUevent *phEvent, unsigned int Flags) {
     return OCCA_CUDA_IS_NOT_ENABLED;

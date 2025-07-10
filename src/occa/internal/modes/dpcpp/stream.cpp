@@ -13,10 +13,6 @@ namespace occa {
       isWrapped(isWrapped_) {
 
       }
-
-
-      //  todo implement deconstructor
-    stream::~stream() {}
     
 
     void stream::finish(){
@@ -43,12 +39,13 @@ namespace occa {
     void* stream::unwrap() {
       return static_cast<void*>(&commandQueue);
     }
+  
+
+
+    occa::dpcpp::streamTag stream::memcpy(void * dest,const void* src, occa::udim_t num_bytes)
+    {
+      ::sycl::event e{commandQueue.memcpy(dest, src, num_bytes)};
+      return dpcpp::streamTag(modeDevice, e);
+    }
   }
-
-
-    // occa::dpcpp::streamTag stream::memcpy(void * dest,const void* src, occa::udim_t num_bytes)
-    // {
-    //   ::sycl::event e{commandQueue.memcpy(dest, src, num_bytes)};
-    //   return dpcpp::streamTag(modeDevice, e);
-    // }
 }

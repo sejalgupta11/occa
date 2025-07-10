@@ -255,6 +255,10 @@ namespace occa {
                                        size_t ByteCount, hipStream_t hStream) {
     return OCCA_HIP_IS_NOT_ENABLED;
   }
+  
+  inline hipError_t hipMemGetInfo(size_t *free, size_t *total) {
+    return OCCA_HIP_IS_NOT_ENABLED;
+  }
 
   //   ---[ Module ]--------------------
   inline hipError_t hipModuleGetFunction(hipFunction_t *hfunc, hipModule_t hmod, const char *name) {

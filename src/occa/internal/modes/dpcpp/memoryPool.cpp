@@ -39,21 +39,29 @@ namespace occa {
 
     udim_t memoryPool::freeDeviceMemory() const{
 
-      if (dev.has(aspect::ext_intel_free_memory)) {
-        auto freeMemory = dev.get_info<ext::intel::info::device::free_memory>();
-        return static_cast<udim_t>(freeMemory);
+      auto devices = sycl::device::get_devices();
+      if (devices.empty()) {
+        return 0;
       }
-      return 0; // throw an error here? 
-      
+      const auto& device = devices[0]; 
+#ifdef SYCL_EXT_INTEL
+      auto freeMemory = device.get_info<::sycl::ext::intel::info::device::free_memory>();
+#else
+      auto freeMemory = device.get_info<sycl::info::device::global_mem_size>();
+#endif
+      return static_cast<udim_t>(freeMemory);
 
-       
     }
 
     udim_t memoryPool::totalDeviceMemory() const{
-      uint64_t totalMemory = ::sycl::info::device::global_mem_size(); 
-      return static_cast<udim_t>(totalMemory); 
-
-
+      auto devices = sycl::device::get_devices();
+      if (devices.empty()) {
+        return 0;
+      }
+      const auto& device = devices[0];
+      auto totalMemory = device.get_info<sycl::info::device::global_mem_size>();
+      return static_cast<udim_t>(totalMemory);
+    
     }
   }
 }

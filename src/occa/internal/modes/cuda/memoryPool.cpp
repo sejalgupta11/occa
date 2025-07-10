@@ -60,13 +60,13 @@ namespace occa {
 
     udim_t memoryPool::freeDeviceMemory() const{
       size_t freeBytes, totalBytes;
-      OCCA_CUDA_ERROR(cuMemGetInfo(&freeBytes, &totalBytes));
+      OCCA_CUDA_ERROR("Memory: get mem info", cuMemGetInfo(&freeBytes, &totalBytes));
       return static_cast<udim_t>(freeBytes);
     }
 
     udim_t memoryPool::totalDeviceMemory() const{
       size_t freeBytes, totalBytes;
-      OCCA_CUDA_ERROR(cuMemGetInfo(&freeBytes, &totalBytes));
+      OCCA_CUDA_ERROR("Memory: get mem info", cuMemGetInfo(&freeBytes, &totalBytes));
       return static_cast<udim_t>(totalBytes);
     }
 
