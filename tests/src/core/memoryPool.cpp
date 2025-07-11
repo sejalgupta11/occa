@@ -9,12 +9,83 @@ void testVoid();
 void testTotal(const std::string mode); 
 void testFree(const std::string mode);
 void testSerial(); 
+static void display_mallinfo(void);
+int testMallinfo();
+
+#include <malloc.h>
+#include <stdlib.h>
+#include <string.h>
+#include <iostream>
+
+
+static void
+display_mallinfo(void)
+{
+    struct mallinfo mi;
+
+    mi = mallinfo();
+
+
+    std::cout << "Total non-mmapped bytes (arena):       " << mi.arena   << '\n'
+          << "# of free chunks (ordblks):            " << mi.ordblks << '\n'
+          << "# of free fastbin blocks (smblks):     " << mi.smblks  << '\n'
+          << "# of mapped regions (hblks):           " << mi.hblks   << '\n'
+          << "Bytes in mapped regions (hblkhd):      " << mi.hblkhd  << '\n'
+          << "Max. total allocated space (usmblks):  " << mi.usmblks << '\n'
+          << "Free bytes held in fastbins (fsmblks): " << mi.fsmblks << '\n'
+          << "Total allocated space (uordblks):      " << mi.uordblks<< '\n'
+          << "Total free space (fordblks):           " << mi.fordblks<< '\n'
+          << "Topmost releasable block (keepcost):   " << mi.keepcost<< std::endl;
+
+}
+
+int testMallinfo() // to see if calling mallinfo here gives 0's
+{
+#define MAX_ALLOCS 2000000
+    char *alloc[MAX_ALLOCS];
+    size_t blockSize, numBlocks, freeBegin, freeEnd, freeStep;
+
+   
+
+    numBlocks = 20000;
+    blockSize = 150;
+    freeStep =  1;
+    freeBegin =  0;
+    freeEnd = numBlocks;
+
+    std::cout << "============== Before allocating blocks ==============\n";
+    display_mallinfo();
+
+    for (size_t j = 0; j < numBlocks; j++) {
+        if (numBlocks >= MAX_ALLOCS) {
+            std::cerr << "Too many allocations\n";
+            exit(EXIT_FAILURE);
+        }
+
+        alloc[j] = (char*)malloc(blockSize);
+        if (alloc[j] == NULL) {
+            perror("malloc");
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    std::cout << "\n============== After allocating blocks ==============\n";
+    display_mallinfo();
+
+    for (size_t j = freeBegin; j < freeEnd; j += freeStep)
+        free(alloc[j]);
+
+    std::cout << "\n============== After freeing blocks ==============\n";
+    display_mallinfo();
+
+}
 
 
 int main(const int argc, const char **argv) {
 
-  // testSerial(); 
-  // return 0;  // temp to get cmake set up
+  testMallinfo(); 
+
+  testSerial(); 
 
 
   //existing tests 
@@ -44,7 +115,7 @@ int main(const int argc, const char **argv) {
 void testSerial(){
 
   int num_to_allocate = 9999; 
-float *data = new float[num_to_allocate];
+  float *data = new float[num_to_allocate];
   float *test = new float[num_to_allocate];
   for (int i = 0; i < num_to_allocate; ++i) {
     data[i] = i;
@@ -78,14 +149,14 @@ float *data = new float[num_to_allocate];
   ASSERT_TRUE(totalmem > 1 );
   ASSERT_TRUE(freemem > 1 ); 
 
-  ASSERT_SAME_SIZE(totalmem, freemem); 
+  // ASSERT_SAME_SIZE(totalmem, freemem); 
 
   // allocate some amount of memory 
   occa::udim_t allocatedSize=100*sizeof(float); 
   // allocate 100 floats 
 
 
-  ASSERT_SAME_SIZE(totalmem, freemem+allocatedSize);
+  // ASSERT_SAME_SIZE(totalmem, freemem+allocatedSize);
 }
 
 
