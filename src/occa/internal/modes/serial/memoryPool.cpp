@@ -7,6 +7,7 @@
 
 #include <malloc.h>
 #include <stdlib.h>
+#include <sys/resource.h>
 
 namespace occa {
   namespace serial {
@@ -40,10 +41,12 @@ namespace occa {
 
     // https://www.man7.org/linux/man-pages/man3/mallinfo.3.html
     udim_t memoryPool::freeDeviceMemory() const{
-      struct mallinfo result = ::mallinfo(); 
-      size_t freeMem = result.fordblks; // total free space, bytes
-      return freeMem; 
-      return static_cast<udim_t>(freeMem); 
+      // struct mallinfo result = ::mallinfo(); 
+      // size_t freeMem = result.fordblks; // total free space, bytes
+      struct rusage result;
+      getrusage(RUSAGE_CHILDREN, &result);
+      // return totalDeviceMemory() - static_cast<udim_t>(result.ru_maxrss) * 1000; // ru_maxrss is in kb
+      return static_cast<udim_t>(result.ru_maxrss) * 1000; 
     }
 
     udim_t memoryPool::totalDeviceMemory() const{
@@ -51,6 +54,9 @@ namespace occa {
       size_t freeMem = result.fordblks; // total allocated space, bytes
       size_t allocatedMem = result.uordblks;
       return static_cast<udim_t>(freeMem + allocatedMem); 
+      // struct rusage result;
+      // getrusage(RUSAGE_SELF, &result);
+      // return static_cast<udim_t>(result.);
     }
   }
 }
