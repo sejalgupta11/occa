@@ -247,6 +247,19 @@ namespace occa {
     return 0;
   }
 
+  udim_t device::availableMemory() const
+  {
+    if (modeDevice) return modeDevice->availableMemory(); 
+    return 0; 
+  }
+
+  udim_t device::totalMemory() const
+  {
+    if (modeDevice) return modeDevice->totalMemory();
+    return 0; 
+  }
+
+
   void device::finish() {
     if (modeDevice) {
       modeDevice->finish();

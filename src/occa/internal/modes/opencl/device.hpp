@@ -88,6 +88,9 @@ namespace occa {
       modeMemoryPool_t* createMemoryPool(const occa::json &props) override;
 
       udim_t memorySize() const override;
+
+      udim_t availableMemory() const override; 
+      udim_t totalMemory() const override; 
       //================================
 
       void* unwrap() override;

@@ -257,6 +257,26 @@ namespace occa {
     void free();
 
     /**
+     * @startDoc{availableMemory}
+     *
+     * Description:
+     *   Get the byte size of the available memory
+     *
+     * @endDoc
+     */
+    udim_t availableMemory() const; 
+
+    /**
+     * @startDoc{totalMemory}
+     *
+     * Description:
+     *   Get the byte size of the total device memory
+     *
+     * @endDoc
+     */
+    udim_t totalMemory() const; 
+
+    /**
      * @startDoc{mode}
      *
      * Description:

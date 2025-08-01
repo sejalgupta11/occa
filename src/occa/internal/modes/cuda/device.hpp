@@ -103,6 +103,9 @@ namespace occa {
       //================================
 
       void* unwrap() override;
+
+      udim_t availableMemory() const override; 
+      udim_t totalMemory() const override; 
     };
   }
 }

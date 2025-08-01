@@ -446,6 +446,13 @@ namespace occa {
     udim_t device::memorySize() const {
       return cuda::getDeviceMemorySize(cuDevice);
     }
+
+    udim_t device::availableMemory() const {
+      
+    }
+    udim_t device::totalMemory() const {
+      
+    } 
     //==================================
 
     void* device::unwrap() {

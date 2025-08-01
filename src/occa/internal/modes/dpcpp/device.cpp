@@ -368,6 +368,14 @@ namespace occa
       return global_mem_size;
     }
 
+    udim_t device::availableMemory() const {
+      
+    }
+    udim_t device::totalMemory() const {
+      
+    } 
+    
+
     void* device::unwrap() {
       return static_cast<void*>(&dpcppDevice);
     }
