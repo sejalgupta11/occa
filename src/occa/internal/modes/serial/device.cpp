@@ -11,6 +11,13 @@
 #include <occa/internal/modes/serial/streamTag.hpp>
 #include <occa/internal/lang/modes/serial.hpp>
 
+
+
+//dependencies for availableMemory and totalMemory 
+#include <malloc.h>
+#include <stdlib.h>
+#include <sys/resource.h>
+
 namespace occa {
   namespace serial {
     device::device(const occa::json &properties_) :
@@ -479,10 +486,16 @@ namespace occa {
     }
 
     udim_t device::availableMemory() const {
-      
+      struct rusage result;
+      getrusage(RUSAGE_SELF, &result);
+      // return totalDeviceMemory() - static_cast<udim_t>(result.ru_maxrss) * 1000; // ru_maxrss is in kb
+      return static_cast<udim_t>(result.ru_maxrss); 
     }
     udim_t device::totalMemory() const {
-      
+      struct mallinfo result = mallinfo(); 
+      size_t freeMem = result.fordblks; // total allocated space, bytes
+      size_t allocatedMem = result.uordblks;
+      return static_cast<udim_t>(freeMem + allocatedMem); 
     } 
     //==================================
 

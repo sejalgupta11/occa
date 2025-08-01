@@ -19,6 +19,9 @@
 #    include "CL/opencl.h"
 #  endif
 
+#include <nvml.h>
+
+
 #else
 
 // Wrap in the occa namespace so as long as we don't use ::cl_device_id, the two

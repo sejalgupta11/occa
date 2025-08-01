@@ -448,10 +448,14 @@ namespace occa {
     }
 
     udim_t device::availableMemory() const {
-      
+      size_t freeBytes, totalBytes;
+      OCCA_CUDA_ERROR("Memory: get mem info", cuMemGetInfo(&freeBytes, &totalBytes));
+      return static_cast<udim_t>(freeBytes);
     }
     udim_t device::totalMemory() const {
-      
+      size_t freeBytes, totalBytes;
+      OCCA_CUDA_ERROR("Memory: get mem info", cuMemGetInfo(&freeBytes, &totalBytes));
+      return static_cast<udim_t>(totalBytes);
     } 
     //==================================
 

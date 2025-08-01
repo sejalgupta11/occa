@@ -316,10 +316,10 @@ namespace occa {
     }
 
     udim_t device::availableMemory() const {
-      
+      OCCA_FORCE_ERROR("Not Implemented");
     }
     udim_t device::totalMemory() const {
-      
+      OCCA_FORCE_ERROR("Not Implemented");
     } 
     //==================================
 

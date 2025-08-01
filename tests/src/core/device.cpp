@@ -4,13 +4,48 @@
 void testProperties();
 void testWrapMemory();
 void testUnwrap();
+void testTotalMemory(std::string mode);
+void testAvailableMemory(std::string mode);
 
 int main(const int argc, const char **argv) {
   testProperties();
   testWrapMemory();
   testUnwrap();
 
+  std::string modes[] = {
+    "Serial",
+    "CUDA",
+    "HIP",
+    "OpenCL",
+    "SYCL",
+    "Metal",
+  };
+  for (const std::string &mode : modes) {
+    std::cout << "Testing " << mode << " mode..." << std::endl;
+    testTotalMemory(mode);
+    testAvailableMemory(mode);
+  }
+
+
   return 0;
+}
+
+void testTotalMemory(std::string mode) {
+  occa::device device({
+    {"mode", mode}
+  });
+
+  occa::udim_t totalMemory = device.totalMemory();
+  ASSERT_TRUE(totalMemory > 0);
+}
+
+void testAvailableMemory(std::string mode) {
+  occa::device device({
+    {"mode", mode}
+  });
+
+  occa::udim_t availableMemory = device.availableMemory();
+  ASSERT_TRUE(availableMemory > 0);
 }
 
 void testProperties() {

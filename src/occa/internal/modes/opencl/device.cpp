@@ -367,10 +367,61 @@ namespace occa {
     }
 
     udim_t device::availableMemory() const {
-      
+      cl_platform_id platform_id = getPlatformFromDevice(clDevice);
+      std::string vendor = opencl::platformVendor(platform_id);
+
+
+      if (vendor == "NVIDIA") {
+        nvmlMemory_t nv_meminfo = { 0 };
+        inner_nvml_res = nvmlDeviceGetMemoryInfo(nv_device_handle, &nv_meminfo);
+        BreakOnNVMLError(inner_nvml_res);
+
+        auto totalMemory = nv_meminfo.total;
+        auto freeMemory = nv_meminfo.free;
+        auto usedMemory = nv_meminfo.used;
+      }
+      else if (vendor == "AMD") {
+        cl_ulong freeMemory = 0;
+        clGetDeviceInfo(clDevice, CL_DEVICE_GLOBAL_FREE_MEMORY_AMD, sizeof(cl_ulong), &freeMemory, nullptr);
+      }
+      else if (vendor == "Intel") {
+        OCCA_FORCE_ERROR("Intel + OpenCL device memory query not implemented yet");
+      }
+      else {
+        OCCA_FORCE_ERROR("Not implemented for OpenCL use with vendor: " + vendor);
+      }
+
+      return static_cast<udim_t>(freeMemory);
+
     }
+
+
     udim_t device::totalMemory() const {
-      
+      cl_platform_id platform_id = getPlatformFromDevice(clDevice);
+      std::string vendor = opencl::platformVendor(platform_id);
+
+
+      if (vendor == "NVIDIA") {
+        nvmlMemory_t nv_meminfo = { 0 };
+        inner_nvml_res = nvmlDeviceGetMemoryInfo(nv_device_handle, &nv_meminfo);
+        BreakOnNVMLError(inner_nvml_res);
+
+        auto totalMemory = nv_meminfo.total;
+        auto freeMemory = nv_meminfo.free;
+        auto usedMemory = nv_meminfo.used;
+      }
+      else if (vendor == "AMD") {
+        cl_ulong totalMemory = 0;
+        clGetDeviceInfo(clDevice, CL_DEVICE_MAX_MEM_ALLOC_SIZE, sizeof(cl_ulong), &totalMemory, nullptr);
+      }
+      else if (vendor == "Intel") {
+        OCCA_FORCE_ERROR("Intel + OpenCL device memory query not implemented yet");
+      }
+      else {
+        OCCA_FORCE_ERROR("Not implemented for OpenCL use with vendor: " + vendor);
+      }
+
+      return static_cast<udim_t>(totalMemory);
     } 
     //==================================
 

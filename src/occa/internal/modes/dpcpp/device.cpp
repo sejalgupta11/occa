@@ -369,10 +369,26 @@ namespace occa
     }
 
     udim_t device::availableMemory() const {
-      
+      auto devices = sycl::device::get_devices();
+      if (devices.empty()) {
+        return 0;
+      }
+      const auto& device = devices[0]; 
+#ifdef SYCL_EXT_INTEL
+      auto freeMemory = device.get_info<::sycl::ext::intel::info::device::free_memory>();
+#else
+      auto freeMemory = device.get_info<sycl::info::device::global_mem_size>();
+#endif
+      return static_cast<udim_t>(freeMemory);
     }
     udim_t device::totalMemory() const {
-      
+      auto devices = sycl::device::get_devices();
+      if (devices.empty()) {
+        return 0;
+      }
+      const auto& device = devices[0];
+      auto totalMemory = device.get_info<sycl::info::device::global_mem_size>();
+      return static_cast<udim_t>(totalMemory);
     } 
     
 

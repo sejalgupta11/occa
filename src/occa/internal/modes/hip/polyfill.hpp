@@ -203,6 +203,10 @@ namespace occa {
     return OCCA_HIP_IS_NOT_ENABLED;
   }
 
+   inline hipError_t hipMemGetInfo(size_t *free, size_t *total) {
+    return OCCA_HIP_IS_NOT_ENABLED;
+  }
+
   inline hipError_t hipFree(hipDeviceptr_t dptr) {
     return OCCA_HIP_IS_NOT_ENABLED;
   }
