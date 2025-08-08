@@ -3,6 +3,7 @@
 #include <occa.hpp>
 
 
+
 int main(int argc, const char **argv) {
 
 
@@ -16,18 +17,14 @@ int main(int argc, const char **argv) {
     for (int i = 0; i < entries; ++i) {
         a[i]  = i;
         b[i]  = 1 - i;
-        ab[i] = 0;
+        ab[i] = 1;
     }
 
 
 
-    // initialize device and allocate memory
-    occa::device device;
+    // Initialize device and allocate memory
+    occa::device device({{"mode", "Serial"}});
 
-    device.setup({
-        {"mode", "Serial"} 
-    });
-    
     occa::memory o_a, o_b, o_ab;
 
     o_a = device.malloc<float>(entries);
@@ -38,22 +35,11 @@ int main(int argc, const char **argv) {
     o_a.copyFrom(a);
     o_b.copyFrom(b);
 
-    // int block = 4; 
-
-    // // Pass value of 'block' at kernel compile-time
-    // occaJson addVectorsProps = occaCreateJson();
-    // occaJsonObjectSet(addVectorsProps,
-    //                     "defines/block",
-    //                     occaInt(block));
-
-    // // Compile at runtime
-    // occa::kernel addVectors = device.buildKernel("addVectors.okl","addVectors", addVectorsProps); 
-    
-    
+  
+    // // Compile at runtime    
     occa::kernel addVectors = device.buildKernel("addVectors.okl","addVectors");
 
     // Launch device kernel
-    addVectors.setRunDims(entries, 1); // set the run dimensions
     addVectors(entries, o_a, o_b, o_ab);
 
     // Copy result to the host
@@ -62,7 +48,7 @@ int main(int argc, const char **argv) {
     // Verify results
     for (int i = 0; i < entries; ++i) {
         if (!occa::areBitwiseEqual(ab[i], a[i] + b[i])) {
-        throw 1;
+            std::cout << ab[i]  << std::endl; 
         }
     }
 

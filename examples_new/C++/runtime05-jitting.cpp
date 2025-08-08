@@ -1,10 +1,9 @@
-// int main(){
-//     return 0 ;
-// }
-
 #include <iostream>
 
 #include <occa.hpp>
+
+#define exampleDtype float 
+#define numPerThread (12 / sizeof(exampleDtype)) // idk a good way of choosing these 
 
 
 int main(int argc, const char **argv) {
@@ -13,56 +12,46 @@ int main(int argc, const char **argv) {
     // Set up information on host memory 
     int entries = 12;
 
-    float alpha = 3.14f; 
+    exampleDtype alpha = 3.14f; 
 
-    float *a  = new float[entries];
-    float *b  = new float[entries];
-    float *ans = new float[entries];
+    exampleDtype *a  = new exampleDtype[entries];
+    exampleDtype *b  = new exampleDtype[entries];
+    exampleDtype *ans = new exampleDtype[entries];
 
     for (int i = 0; i < entries; ++i) {
         a[i]  = i/alpha;
-        b[i]  = 1.f-i;
+        b[i]  = 1-i;
         ans[i] = a[i]*alpha + b[i];//1.f;
     }
 
 
 
     // initialize device and allocate memory
-    occa::device device;
+    occa::device device({{"mode", "Serial"}});
 
-    device.setup({
-        {"mode", "Serial"} 
-    });
     
     occa::memory o_a, o_b, o_ans;
 
-    o_a = device.malloc<float>(entries);
-    o_b = device.malloc<float>(entries);
-    o_ans = device.malloc<float>(entries);
+    o_a = device.malloc<exampleDtype>(entries);
+    o_b = device.malloc<exampleDtype>(entries);
+    o_ans = device.malloc<exampleDtype>(entries);
 
-    float* fill_device = new float[entries]; 
-    for (int i = 0; i < entries; ++i) {
-        fill_device[i] = 13.17f;
-    }
-    o_ans.copyFrom(fill_device, entries);
-
-
-    // Copy memory to the device
     o_a.copyFrom(a);
     o_b.copyFrom(b);
 
     
 
-    // Pass value of 'alpha' at kernel compile-time
+    // Pass data type and number of items per thread at compile time 
     occa::properties axpyProps;
-    axpyProps["defines/alpha"] = alpha;
+    axpyProps["defines/exampleDtype"] = "float"; //std::to_string(exampleDtype);
+    axpyProps["defines/numPerThread"] = std::to_string(numPerThread);
 
     // Compile at runtime
-    occa::kernel axpy = device.buildKernel("define_required_axpy.okl", "axpy", axpyProps);
+    occa::kernel axpy = device.buildKernel("axpy_defines.okl", "axpy", axpyProps);
+
 
     // Launch device kernel
-    axpy.setRunDims(entries, 1); // set the run dimensions
-    axpy(entries, o_a, o_b, o_ans);
+    axpy(entries, alpha, o_a, o_b, o_ans);
 
     // Copy result to the host
     o_ans.copyTo(ans);

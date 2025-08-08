@@ -9,7 +9,7 @@ int main(int argc, const char **argv) {
     // Declare and initialize the device 
     occa::device cudaDevice;
     cudaDevice.setup({
-        {"mode", "CUDA"}, 
+        {"mode", "cuda"}, 
         {"device_id", 0} 
     });
     

@@ -21,11 +21,8 @@ int main(int argc, const char **argv) {
 
 
     // Decalre and initialize the device 
-    occa::device device;
 
-    device.setup({
-        {"mode", "Serial"} // these are the defaults 
-    });
+    occa::device device({{"mode", "Serial"}});
 
     // Allocate memory on the device
     
@@ -46,22 +43,26 @@ int main(int argc, const char **argv) {
     casted_o_b.copyFrom(b);
 
     // Check how much memory we have allocated, and how much is remaining
+    std::cout << "========= Device Memory Info =========\n";
     std::cout << "Device memory allocated: " << device.memoryAllocated() << " bytes\n";
     std::cout << "Device memory size: " << device.memorySize() << " bytes\n";
     // std::cout << "Device memory remaining: " << device.availableMemory() << " bytes\n";
     // todo the above line is implemented a different branch 
     
     // Verify the data type 
+    std::cout << "\n========= Verify the data type =========\n";
     std::cout << "Data type of o_a: " << o_a.dtype().name() << '\n';
     std::cout << "Data type of o_b: " << o_b.dtype().name() << '\n';
     std::cout << "Data type of casted_o_b: " << casted_o_b.dtype().name() << '\n';
 
     // Verify the element count of the memory objects
+    std::cout << "\n========= Verify the element count =========\n";
     std::cout << "Length of o_a: " << o_a.length() << " elements\n";
     std::cout << "Length of o_b: " << o_b.length() << " elements\n";
     std::cout << "Length of casted_o_b: " << casted_o_b.length() << " elements\n";
 
     // Verify the byte size of the memory objects
+    std::cout << "\n========= Verify the byte size =========\n";
     std::cout << "Byte size of o_a: " << o_a.byte_size() << " bytes\n";
     std::cout << "Byte size of o_b: " << o_b.byte_size() << " bytes\n";
     std::cout << "Byte size of casted_o_b: " << casted_o_b.byte_size() << " bytes\n";   
@@ -76,6 +77,7 @@ int main(int argc, const char **argv) {
     occa::memory secondHalf = o_a.slice(entries/2, entries/2); 
 
     // Verify the element count of each 
+    std::cout << "\n========= Verify the slice length =========\n";
     std::cout << "Length of firstHalf: " << firstHalf.length() << " elements\n";
     std::cout << "Length of secondHalf: " << secondHalf.length() << " elements\n";
 
