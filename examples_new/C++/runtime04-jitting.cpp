@@ -64,16 +64,17 @@ int main(int argc, const char **argv) {
     // Verify results
     for (int i = 0; i < entries; ++i) {
         if (abs(a_float[i] + b_float[i] - ans_float[i]) > .0000001) {
-            std::cerr << "Error at index " << i << ": "
+            std::cerr << "Error at float index " << i << ": "
                       << "Expected " << (a_float[i] + b_float[i])
                       << ", got " << ans_float[i] << std::endl;
         }
         if (a_int[i] + b_int[i] != ans_int[i]) { 
-            std::cerr << "Error at index " << i << ": "
+            std::cerr << "Error at int index " << i << ": "
                       << "Expected " << (a_int[i] + b_int[i])
                       << ", got " << ans_int[i] << std::endl;
         }
     }
+    std::cout << "All results verified successfully!" << std::endl;
 
     // Free device -- allocated memory, built kernels, created streams and streamTags
     device.free(); 
