@@ -1,0 +1,72 @@
+// compute C[M x N] = A[M x K] x B[K x N]
+@kernel void matrix_multiply(const int M,
+                          const int N,
+                          const int K,
+                          @restrict const float *A,
+                          @restrict const float *B,
+                          @restrict float *C) {
+  @outer for (int r = 0; r < M; ++r) {
+    @inner for (int c = 0; c < N; ++c) {
+    	float acc = 0.f;
+    	for (int k = 0; k < K; ++k) {
+    		acc += A[r * K + k] * B[k * N + c];
+      }
+    	C[r * N + c] = acc;
+    }
+  }
+}
+  //todo change example to one that requires multiple outer loops
+  // adding two matrices (outer over cols, stripmine over row index)
+  // add two scalary fields in 3d
+  //interpolation 
+  //-------mandelbrot set-------
+
+
+
+@kernel void mandelbrot(const int xMax,
+                                 const int yMax,
+                                 const float xMin,
+                                 const float yMin,
+                                 const int maxIter,
+                                 const float dx,
+                                 const float dy,
+                                 int *iters) {
+
+  int blockSize = 16; 
+
+  @outer for (int r0 = 0; r0 < yMax; r0 += blockSize) {
+    @outer for (int c0 = 0; c0 < xMax; c0 += blockSize) {
+
+      @inner for (int ty = 0; ty < blockSize; ++ty) {
+        @inner for (int tx = 0; tx < blockSize; ++tx) {
+          const int r = r0 + ty;
+          const int c = c0 + tx;
+
+          if (r < yMax && c < xMax) {
+            const float cy = yMin + r * dy;
+            const float cx = xMin + c * dx;
+
+            float zx = 0.f;
+            float zy = 0.f;
+            int count = 0;
+            float zx2, zy2, old_zx;
+
+            for (int it = 0; it < maxIter; ++it) {
+              zx2 = zx * zx;
+              zy2 = zy * zy;
+              old_zx = zx;
+              
+              if (zx2 + zy2 < 4.f) {
+                count++;
+                zx = zx2 - zy2 + cx;
+                zy = 2.f * old_zx * zy + cy;
+              }
+            }
+
+            iters[r * xMax + c] = count;
+          }
+        }
+      }
+    }
+  }
+}
