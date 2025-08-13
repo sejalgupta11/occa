@@ -1,30 +1,7 @@
-// compute C[M x N] = A[M x K] x B[K x N]
-@kernel void matrix_multiply(const int M,
-                          const int N,
-                          const int K,
-                          @restrict const float *A,
-                          @restrict const float *B,
-                          @restrict float *C) {
-  @outer for (int r = 0; r < M; ++r) {
-    @inner for (int c = 0; c < N; ++c) {
-    	float acc = 0.f;
-    	for (int k = 0; k < K; ++k) {
-    		acc += A[r * K + k] * B[k * N + c];
-      }
-    	C[r * N + c] = acc;
-    }
-  }
-}
-  //todo change example to one that requires multiple outer loops
-  // adding two matrices (outer over cols, stripmine over row index)
-  // add two scalary fields in 3d
-  //interpolation 
-  //-------mandelbrot set-------
-
-
-
-
-
+// Mandelbrot set: a fractal based on the iteration 
+// $z_0 = c$, $z_{n} = z{n-1}^2 + c$ for some $c$
+// We use a 2D Grid of values for (complex) $c$ 
+// and plot the number of iterations it takes for the iterate to become unbounded
 
 @kernel void mandelbrot(const float xMax,
                         const float yMax,
@@ -34,7 +11,7 @@
                         const int numX,
                         const int numY,
                         int *iters) {
-  int blockSize = 16; 
+  const int blockSize = 16; 
 
 
   const float dx = (xMax - xMin) / numX;
@@ -69,9 +46,8 @@
               }
             }
 
-            if (r*numX + c < numX*numY) { // for trying to avoid segfault
-              iters[r * numX + c] = count;
-            }
+            iters[r * numX + c] = count;
+            
           }
         }
       }

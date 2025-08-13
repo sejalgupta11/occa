@@ -1,0 +1,22 @@
+
+@kernel void math(const int n,
+                  const float *A,
+                  float *sinA, ) {
+    @outer  for (int i = 0; i < n; i+= 16) {
+        @inner for (int j=0; j<16; ++j){
+            float threadVal = A[i+j]; 
+            sinA[i+j] = sin(threadVal);
+            logA[i+j] = threadVal > 0 ? log(threadVal): -10000.f;
+
+
+
+        }
+       
+        
+    }
+    
+}
+
+
+                            
+
