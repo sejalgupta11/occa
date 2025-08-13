@@ -64,6 +64,7 @@ int main(int argc, const char **argv) {
     outFile.close(); 
 
     occa::kernel sync = device.buildKernel("kernel03-sync.okl", "reverseVector");
+    occa::kernel atomics = device.buildKernel("kernel05-atomics.okl", "reduction");
     occa::kernel math = device.buildKernel("kernel06-math.okl", "mathExample");
 
     device.free(); 
