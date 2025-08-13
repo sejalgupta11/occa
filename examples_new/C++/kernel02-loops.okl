@@ -23,50 +23,59 @@
 
 
 
-@kernel void mandelbrot(const int xMax,
-                                 const int yMax,
-                                 const float xMin,
-                                 const float yMin,
-                                 const int maxIter,
-                                 const float dx,
-                                 const float dy,
-                                 int *iters) {
 
+
+
+@kernel void mandelbrot(const float xMax,
+                        const float yMax,
+                        const float xMin,
+                        const float yMin,
+                        const int maxIter,
+                        const int numX,
+                        const int numY,
+                        int *iters) {
   int blockSize = 16; 
 
-  @outer for (int r0 = 0; r0 < yMax; r0 += blockSize) {
-    @outer for (int c0 = 0; c0 < xMax; c0 += blockSize) {
+
+  const float dx = (xMax - xMin) / numX;
+  const float dy = (yMax - yMin) / numY;
+
+  @outer for (int r0 = 0; r0 < numY; r0 += blockSize) {
+    @outer for (int c0 = 0; c0 < numX; c0 += blockSize) {
 
       @inner for (int ty = 0; ty < blockSize; ++ty) {
         @inner for (int tx = 0; tx < blockSize; ++tx) {
           const int r = r0 + ty;
           const int c = c0 + tx;
 
-          if (r < yMax && c < xMax) {
+          if (r < numY && c < numX) {
             const float cy = yMin + r * dy;
             const float cx = xMin + c * dx;
 
             float zx = 0.f;
             float zy = 0.f;
             int count = 0;
-            float zx2, zy2, old_zx;
+            float zx2, zy2, zx_old;
 
             for (int it = 0; it < maxIter; ++it) {
               zx2 = zx * zx;
               zy2 = zy * zy;
-              old_zx = zx;
-              
+
               if (zx2 + zy2 < 4.f) {
-                count++;
+                ++count;
+                zx_old = zx;
                 zx = zx2 - zy2 + cx;
-                zy = 2.f * old_zx * zy + cy;
+                zy = 2.f * zx_old * zy + cy;
               }
             }
 
-            iters[r * xMax + c] = count;
+            if (r*numX + c < numX*numY) { // for trying to avoid segfault
+              iters[r * numX + c] = count;
+            }
           }
         }
       }
     }
   }
 }
+
