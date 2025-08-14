@@ -19,7 +19,8 @@
     
 }
 
-//todo make vector reverse instead
+// todo make vector reverse instead
+// out of place transpose or some kind of other swap 
 
                             
 
